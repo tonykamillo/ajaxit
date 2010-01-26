@@ -4,7 +4,7 @@
 		var element_name = $(this).get(0).nodeName.toLowerCase();
 		if( element_name == 'form' )
 		{
-			var default_options = {success:null, error:null, dataType:'json', async:true};	
+			var default_options = {success:null, error:null, dataType:'json'};	
 			options = $.extend(default_options, options);
 			
 			if( $(this).find('input:file').length > 0 )
@@ -26,11 +26,11 @@
 			}
 			else
 			{			
-				$.ajax({
-					async:options.async,
+				$.ajax({					
 					url:$(this).attr('action'),
 					type:$(this).attr('method'),
 					data:$(this).serialize(),
+					dataType:options.dataType,
 					success:options.success,
 					error:options.error
 				});
