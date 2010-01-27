@@ -1,5 +1,9 @@
 Ajaxit is an jQuery plugin which simplifies usage of ajax requests and asynchronous upload.
 
+*******************************************
+*********** Needed jQuery 1.4 *************
+*******************************************
+
 #Options
 
 	dataType -> Can be json, html, text or xml. Default is json (available only for ajax submit form, for now).
