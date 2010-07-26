@@ -9,20 +9,33 @@
 			
 			if( $(this).find('input:file').length > 0 )
 			{
-				var iname = 'ajaxit-iframe-' + new Date().getTime();
-				var iframe = $('<iframe name="'+iname+'">').css('display', 'none').one(
-					'load',
+				var iframe = $('<iframe name="ajaxit-iframe">').css('display', 'none');
+				var form = $(this);
+				
+				form.attr('target', 'ajaxit-iframe');				
+				form.append(iframe);
+				
+				iframe.load(
 					function()
 					{
-						var response = null;
-						try { response = eval( "("+$(this).contents().find('body').html()+")" ); }
-						catch(e) { response = $(this).contents().find('body').html(); }												
-						if( options.success ) options.success( response ); 						
-						iframe.remove();
+						var response = $($(this).contents()[0].body).html();
+						if(options.dataType == 'json')
+						{
+							try { response = $.parseJSON( response ); }
+							catch(e){}
+						}												
+						if( options.success ) options.success( response ); 			
+									
+						setTimeout(
+							function()
+							{ 
+								iframe.remove(); 
+								form.removeAttr('target');
+							}, 
+							1000
+						);
 					}
-				);
-				$('body').append(iframe);
-				$(this).attr('target', iname);
+				);			
 			}
 			else
 			{			
@@ -30,7 +43,6 @@
 					url:$(this).attr('action'),
 					type:$(this).attr('method'),
 					data:$(this).serialize(),
-					dataType:options.dataType,
 					success:options.success,
 					error:options.error
 				});
